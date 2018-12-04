@@ -12,19 +12,15 @@
 </div>
 
 
-
+<div>
 <!-- Main ML Prediction Display Here -->
-    {% if prediction ==  0 %}
-    <p class="card-text"><div class="alert alert-danger" role="alert">
+{% if prediction ==  1 %}
+<p>Spam</p>
 
-</div></p>
-    <a href="#" class="btn btn-danger">Ham</a>
-     {% elif prediction == 1 %}
-	<p class="card-text"><div class="alert alert-danger" role="alert">
-  
-</div></p>
-    <a href="#" class="btn btn-primary">Spam</a>
-    {% endif%}
+{% elif prediction == 0 %}
+ <p>Ham</p>
+
+{% endif%}
   </div>
 
 <!-- Main ML Prediction Display Ends Here -->

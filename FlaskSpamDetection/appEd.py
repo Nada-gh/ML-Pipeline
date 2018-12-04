@@ -8,15 +8,15 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.externals import joblib
 
 
-app = Flask(__name__)
-Bootstrap(app)
+appEd = Flask(__name__)
+Bootstrap(appEd)
 
 
-@app.route('/')
+@appEd.route('/')
 def index():
 	return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
+@appEd.route('/predict', methods=['POST'])
 def predict():
 	#df= pd.read_csv("data/names_dataset.csv")
 	# Features and Labels
@@ -30,16 +30,16 @@ def predict():
 
 	# Loading our ML Model
 	SVM_model = open("models/model_SVM.pk","rb")
-	clf = joblib.load(SVM_model)
+	mdl = joblib.load(SVM_model)
 
 	# Receives the input query from form
 	if request.method == 'POST':
 		namequery = request.form['namequery']
-		data = [namequery]
+		#data = [namequery]
 		#vect = cv.transform(data).toarray()
-		my_prediction = clf.predict(data)
-	return render_template('results.html',prediction = my_prediction,name = namequery.upper())
+		my_prediction = mdl.predict([namequery])
+	return render_template('results.html', prediction = my_prediction)
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	appEd.run(debug=True)

@@ -21,30 +21,26 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import SGDClassifier
 
-{'clf__alpha': 0.01,
- 'tfidf__use_idf': True,
- 'vect__analyzer': 'char',
- 'vect__ngram_range': (2, 3)}
-
 
 def build_and_train():
-    path='/Users/KBrig/ML-Pipeline/spam.csv'
+    #path='/Users/KBrig/ML-Pipeline/spam.csv'
     EmData= pd.read_csv('Spam.csv',encoding='cp1252',dtype={'type':np.str, 'Email_body':np.str})
     EmData=EmData[['type','Email_body']]
     EmData['type_num']= EmData.type.map({'ham':0, 'spam':1})
 
     X= EmData.Email_body
     y= EmData.type_num
+    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4, random_state=1)
 
-    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3, random_state=1)
-    def pip(classifier):
+    def pip1(classifier):
         pipeline = Pipeline([
-            ('vect', CountVectorizer(ngram_range=(2,3), analyzer='char')),  # strings to token integer counts
-            ('tfidf', TfidfTransformer(use_idf=True)),  # integer counts to weighted TF-IDF scores
-            ('clf', classifier),
+        ('vect', CountVectorizer(analyzer='char', ngram_range=(2,3))),  # strings to token integer counts
+        ('tfidf', TfidfTransformer(use_idf=True)),  # integer counts to weighted TF-IDF scores
+        ('clf', classifier),
         ])
         return(pipeline)
-    pip_SVM = pip(SGDClassifier(alpha=0.01))
+
+    pip_SVM = pip1(SGDClassifier(alpha=0.001))
     pip_SVM.fit(X_train,y_train)
     return(pip_SVM)
 
